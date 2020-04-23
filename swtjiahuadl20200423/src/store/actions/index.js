@@ -3,8 +3,8 @@ export default {
         console.log(middleBtn);
         commit("mutationsState",middleBtn);
     },
-    addTypeMsgHandle({commit},colorbg){
-        commit("addTypeMsgMutationsHandle",colorbg);
-        console.log(colorbg,"添加信息");
+    addTypeMsgHandle({commit},colorbgaddTypeMsgHandle){
+        commit("addTypeMsgMutationsHandle",colorbgaddTypeMsgHandle);
+        console.log(colorbgaddTypeMsgHandle[0],"添加信息",colorbgaddTypeMsgHandle[1]);
     },
 }

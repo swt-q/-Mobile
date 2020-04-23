@@ -3,10 +3,10 @@
     <!--头部部分-->
     <div class="header">
       <p>新闻标题：
-        <input type="text">
+        <input type="text" v-model="title" />
       </p>
       <p>新闻地址：
-        <input type="text">
+        <input type="text" v-model="addr" />
       </p>
       <p>新闻类别：
         <select name="" id="selectClass" v-model="selectType" @change="changeHandle">
@@ -22,7 +22,7 @@
         </label>
       </p>
       <p>
-        <button @click="addTypeMsgHandle(colorbg)">提交</button>
+        <button @click="addTypeMsgHandle([selectType,{tit:title,adr:addr,bg:colorbg}])">提交</button>
       </p>
     </div>
     <!--中间部分-->
@@ -31,8 +31,11 @@
     </div>
     <!--渲染部分-->
     <div class="renderPart">
-      <ul>
-        <li></li>
+      <ul v-if="renderPart[middleBtn].list.length === 0 ? false:true">
+        <li v-for="(item,index) in renderPart[middleBtn].list" :key="index" :style="{background:item.bg}">
+          <span class="title-first">{{item.tit}}</span>
+          <span>{{item.adr}}</span>
+        </li>
       </ul>
     </div>
   </div>
@@ -49,19 +52,11 @@
         list:["科技","娱乐","游戏"],
         middleBtn:0,
         bgClass:"bgClass",
-        colorbg:"",
+        colorbg:"red",
         selectType:"科技",
-        renderPart:[
-          {
-            name:"科技",list:[]
-          },
-          {
-            name:"娱乐",list:[]
-          },
-          {
-            name:"游戏",list:[]
-          },
-        ]
+        renderPart:JSON.parse(sessionStorage.getItem("allList")) ? JSON.parse(sessionStorage.getItem("allList")):[],
+        title:"",
+        addr:""
        
       }
     },
@@ -160,6 +155,9 @@
   .renderPart{
     width:400px;
     margin:0 auto;
+  }
+  .title-first{
+    margin-right:30px;
   }
 
 </style>
