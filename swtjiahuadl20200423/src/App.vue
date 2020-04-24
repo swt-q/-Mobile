@@ -9,7 +9,7 @@
         <input type="text" v-model="addr" />
       </p>
       <p>新闻类别：
-        <select name="" id="selectClass" v-model="selectType" @change="changeHandle">
+        <select name="" id="selectClass" v-model="selectType">
           <option v-for="(item,index) in list" :key="index" :value="item" v-text="item"></option>  
         </select>
       </p>
