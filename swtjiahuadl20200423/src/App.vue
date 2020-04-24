@@ -35,7 +35,7 @@
         <li v-for="(item,index) in renderPartStore[middleBtn].list" :key="index" :style="{background:item.bg}">
           <span class="title-first">{{item.tit}}</span>
           <span>{{item.adr}}</span>
-          <button class="delete" @click="deleteHandle([index,selectType])">删除</button>
+          <button class="delete" @click="deleteHandle([index,middleBtn])">删除</button>
         </li>
       </ul>
     </div>
@@ -57,7 +57,7 @@
     data(){
       return{
         list:["科技","娱乐","游戏"],
-        middleBtn:0,
+        middleBtn:0,  //middle按钮选择的是第几个
         bgClass:"bgClass",
         colorbg:"red",
         selectType:"科技",

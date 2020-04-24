@@ -21,14 +21,10 @@ export default {
     deleteMutationsHandle(state,params){
         //取
         state.renderPartStore = JSON.parse(sessionStorage.getItem("allList")) ? JSON.parse(sessionStorage.getItem("allList")):state.renderPartStore;
-        for(let i = 0;i < state.renderPartStore.length;i++){
-            if(state.renderPartStore[i].name === params[1]){  //判断删除的是哪一个类型
-                state.renderPartStore[i].list.splice(params[0],1);
-            }
-        }
+        //得到索引，根据索引删除对应的数据。
+        state.renderPartStore[params[1]].list.splice(params[0],1);
         //存
         sessionStorage.setItem("allList",JSON.stringify(state.renderPartStore));
 
-        console.log(params,"删除传递的参数。。。。");
     }
 }
