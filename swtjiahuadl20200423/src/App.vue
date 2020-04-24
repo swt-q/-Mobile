@@ -31,21 +31,28 @@
     </div>
     <!--渲染部分-->
     <div class="renderPart">
-      <ul v-if="renderPart[middleBtn].list.length === 0 ? false:true">
-        <li v-for="(item,index) in renderPart[middleBtn].list" :key="index" :style="{background:item.bg}">
+      <ul v-if="renderPartStore[middleBtn].list.length === 0 ? false:true">
+        <li v-for="(item,index) in renderPartStore[middleBtn].list" :key="index" :style="{background:item.bg}">
           <span class="title-first">{{item.tit}}</span>
           <span>{{item.adr}}</span>
+          <button class="delete" @click="deleteHandle([index,selectType])">删除</button>
         </li>
       </ul>
     </div>
+    <swtHandle></swtHandle>
+    <swtIndex></swtIndex>
   </div>
+  
 </template>
 <script>
+  import swtHandle from "./components/swtHandle.vue";
+  import swtIndex from "./components/swt";
   import {mapState,mapActions,mapMutations} from "vuex";
   export default {  
     name:"AppIndex",
     components:{
-
+    swtHandle,
+    swtIndex
     },
     data(){
       return{
@@ -54,17 +61,19 @@
         bgClass:"bgClass",
         colorbg:"red",
         selectType:"科技",
-        renderPart:JSON.parse(sessionStorage.getItem("allList")) ? JSON.parse(sessionStorage.getItem("allList")):[],
+        renderPart:[],
         title:"",
-        addr:""
+        addr:"",
+        templateShow:true,
        
       }
     },
     
     methods:{
       ...mapActions({
-        actionCommit:"actionCommit",  // 获取
-        addTypeMsgHandle:"addTypeMsgHandle"  // 添加
+        actionCommit:"actionCommit",  // 刷新获取
+        addTypeMsgHandle:"addTypeMsgHandle", // 添加
+        deleteHandle:"deleteHandle"  //删除
       }),
       ...mapMutations({
 
@@ -73,16 +82,17 @@
         let event = e || window.event;
         let target = event.target || event.srcElement;
         var targetText = target.innerText;
+        //找到显示的那个索引。并保存。
         for(let i = 0;i < this.list.length;i++){
           if(this.list[i] == targetText){
             this.middleBtn = i;
           }
         }
-        this.actionCommit([this.middleBtn.toString(),this.list]);
+        //刷新缓存显示不变。
+        sessionStorage.setItem("middleBtn",this.middleBtn);
+
+        // this.actionCommit([this.middleBtn.toString(),this.list]);
       },
-      changeHandle(){
-        console.log(this.selectType);
-      }
     },
     computed:{
       ...mapState({
@@ -97,13 +107,15 @@
       console.log("AppIndex创建前---beforeCreate");
     },
     created(){
-      console.log("AppIndex组件创建完成---created");
+      this.actionCommit();
+      this.middleBtn = Number(sessionStorage.getItem("middleBtn"));
+      console.log("AppIndex组件创建完成---created",this.list,this.renderPartStore);
     },
     beforeMount(){
-      console.log("AppIndex组件挂载前---beforeMount");
+      console.log("AppIndex组件挂载前---beforeMount",this.list);
     },
     mounted(){
-      console.log("AppIndex组件挂载完成---mounted");
+      console.log("AppIndex组件挂载完成---mounted",this.list);
     },
     beforeUpdate(){
       console.log("AppIndex组件数据更新前---beforeUpdate");
@@ -159,5 +171,10 @@
   .title-first{
     margin-right:30px;
   }
-
+  .delete{
+    float:right;
+  }
+  .renderPart li{
+    border-bottom:2px dashed yellowgreen;
+  }
 </style>
